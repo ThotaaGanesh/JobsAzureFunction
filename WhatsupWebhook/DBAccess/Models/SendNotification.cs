@@ -18,4 +18,5 @@ public partial class SendNotification
     // Navigation properties
     public Job Job { get; set; }
     public User User { get; set; }
+
 }
