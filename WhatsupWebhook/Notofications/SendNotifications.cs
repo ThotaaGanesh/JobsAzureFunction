@@ -98,7 +98,7 @@ namespace WhatsupWebhook.Notofications
             {
                 foreach (var notification in sendNotifications)
                 {
-                    mail.Body = PrepareHtmlContent(notification.Job.JobName, notification.Job.Location, notification.Job.Description, "https://ganeshthota.com");
+                    mail.Body = PrepareHtmlContent(notification.Job, "https://ganeshthota.com");
                     mail.To.Add(new MailAddress(notification.User.EmailId));
                     smtpClient.Send(mail);
                     Logger.LogInformation("Emails sent successfully!");
@@ -112,7 +112,7 @@ namespace WhatsupWebhook.Notofications
             }
         }
 
-        private string PrepareHtmlContent(string title, string location, string description, string url)
+        private string PrepareHtmlContent(Job job, string url)
         {
             string htmlTemplate = $@"
         <!DOCTYPE html>
@@ -137,9 +137,14 @@ namespace WhatsupWebhook.Notofications
             <div class='content'>
                 <h3>Dear Subscriber,</h3>
                 <p>We are excited to announce a new job opportunity that may interest you:</p>
-                <p><strong>Job Title: </strong>{title}</p>
-                <p><strong>Location: </strong>{location}</p>
-                <p><strong>Description: </strong>{description}</p>
+                <p><strong>Company Name: </strong>{job.CompanyName}</p>
+                <p><strong>Job Title: </strong>{job.JobName}</p>
+                <p><strong>Job Description: </strong>{job.Description}</p>
+                <p><strong>Qualifications: </strong>{job.Qualification}</p>
+                <p><strong>Salary: </strong>{job.Salary}</p>
+                <p><strong>Location: </strong>{job.Location}</p>
+                <p><strong>Contact Person: </strong>{job.ContactPerson}</p>
+                <p><strong>Contact Number: </strong>{job.PhoneNumber}</p>
                 <p>For more details and to apply, please click on the link below:</p>
                 <p><a href='{url}' target='_blank'>View Job and Apply</a></p>
             </div>
