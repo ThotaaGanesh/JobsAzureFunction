@@ -98,7 +98,7 @@ namespace WhatsupWebhook.Notofications
             {
                 foreach (var notification in sendNotifications)
                 {
-                    mail.Body = PrepareHtmlContent(notification.Job, "https://ganeshthota.com");
+                    mail.Body = PrepareHtmlContent(notification, "https://ganeshthota.com");
                     mail.To.Add(new MailAddress(notification.User.EmailId));
                     smtpClient.Send(mail);
                     Logger.LogInformation("Emails sent successfully!");
@@ -112,7 +112,7 @@ namespace WhatsupWebhook.Notofications
             }
         }
 
-        private string PrepareHtmlContent(Job job, string url)
+        private string PrepareHtmlContent(SendNotification notification, string url)
         {
             string htmlTemplate = $@"
         <!DOCTYPE html>
@@ -135,16 +135,16 @@ namespace WhatsupWebhook.Notofications
                 <h2>New Job Opportunity</h2>
             </div>
             <div class='content'>
-                <h3>Dear Subscriber,</h3>
+                <h3>Dear {notification.User.Name},</h3>
                 <p>We are excited to announce a new job opportunity that may interest you:</p>
-                <p><strong>Company Name: </strong>{job.CompanyName}</p>
-                <p><strong>Job Title: </strong>{job.JobName}</p>
-                <p><strong>Job Description: </strong>{job.Description}</p>
-                <p><strong>Qualifications: </strong>{job.Qualification}</p>
-                <p><strong>Salary: </strong>{job.Salary}</p>
-                <p><strong>Location: </strong>{job.Location}</p>
-                <p><strong>Contact Person: </strong>{job.ContactPerson}</p>
-                <p><strong>Contact Number: </strong>{job.PhoneNumber}</p>
+                <p><strong>Company Name: </strong>{notification.Job.CompanyName}</p>
+                <p><strong>Job Title: </strong>{notification.Job.JobName}</p>
+                <p><strong>Job Description: </strong>{notification.Job.Description}</p>
+                <p><strong>Qualifications: </strong>{notification.Job.Qualification}</p>
+                <p><strong>Salary: </strong>{notification.Job.Salary}</p>
+                <p><strong>Location: </strong>{notification.Job.Location}</p>
+                <p><strong>Contact Person: </strong>{notification.Job.ContactPerson}</p>
+                <p><strong>Contact Number: </strong>{notification.Job.PhoneNumber}</p>
                 <p>For more details and to apply, please click on the link below:</p>
                 <p><a href='{url}' target='_blank'>View Job and Apply</a></p>
             </div>
