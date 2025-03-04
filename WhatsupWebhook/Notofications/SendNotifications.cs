@@ -22,6 +22,7 @@ namespace WhatsupWebhook.Notofications
             var accessToken = Environment.GetEnvironmentVariable("accessToken");
             var apiUrl = Environment.GetEnvironmentVariable("whatsupapi");
             var templateName = Environment.GetEnvironmentVariable("templateName");
+            var imageUrl = Environment.GetEnvironmentVariable("ImageUrl");
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
@@ -40,17 +41,39 @@ namespace WhatsupWebhook.Notofications
                             {
                                 code = "en_US"
                             },
-                            components = new[]
-                                {
-                        new {
-                            type = "body",
-                            parameters = new[]
-                            {
-                                new { type = "text", text = "+919700619326" },
-                                new { type = "text", text = "https://ganeshthota.com" }
-                            }
+                            components = new object[] // Specify object[] explicitly
+        {
+            new // Header component with image
+            {
+                type = "header",
+                parameters = new[]
+                {
+                    new
+                    {
+                        type = "image",
+                        image = new
+                        {
+                            link = imageUrl
                         }
                     }
+                }
+            },
+            new // Body component
+            {
+                type = "body",
+                parameters = new[]
+                {
+                    new { type = "text", text = notification.Job.CompanyName },
+                    new { type = "text", text = notification.Job.JobName },
+                    new { type = "text", text = notification.Job.Description },
+                    new { type = "text", text = notification.Job.Qualification },
+                    new { type = "text", text = notification.Job.Salary },
+                    new { type = "text", text = notification.Job.Location },
+                    new { type = "text", text = notification.Job.ContactPerson },
+                    new { type = "text", text = notification.Job.PhoneNumber }
+                }
+            }
+        }
                         }
                     };
 
